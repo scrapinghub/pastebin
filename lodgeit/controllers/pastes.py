@@ -44,7 +44,8 @@ class PasteController(object):
             if parent_id is not None:
                 parent = Paste.get(parent_id)
 
-            spam = getform('webpage') or antispam.is_spam(code)
+            #spam = getform('webpage') or antispam.is_spam(code)
+            spam = False # disable spam check (pablo - 23 Nov 2010)
             if spam:
                 error = _('your paste contains spam')
                 captcha = getform('captcha')
