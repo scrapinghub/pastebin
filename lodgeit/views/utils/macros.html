@@ -67,7 +67,7 @@
 
 
 {% macro render_diff_part(diff) %}
-  <table class="diff">
+  <table class="diff linenos">
     {%- for chunk in diff.chunks -%}
       {% if not loop.first -%}
         <tr class="ellipsis">
@@ -76,9 +76,9 @@
       {%- endif -%}
       {% for line in chunk %}
         <tr class="line {{ line.action }}">
-          <th class="old_rev">{{ line.old_lineno }}</th>
-          <th class="new_rev">{{ line.new_lineno }}</th>
-          <td class="code">{{ line.line }}</td>
+          <th class="old_rev"><a href="#l-{{line.idx}}">{{ line.old_lineno }}</a></th>
+          <th class="new_rev"><a href="#l-{{line.idx}}">{{ line.new_lineno }}</a></th>
+          <td class="code" id="l-{{line.idx}}">{{ line.line }}</td>
         </tr>
       {%- endfor -%}
     {% endfor %}

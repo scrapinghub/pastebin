@@ -11,6 +11,7 @@
 import re
 import time
 from cgi import escape
+from itertools import count
 try:
     all
 except NameError:
@@ -122,6 +123,7 @@ class DiffRenderer(object):
         in_header = True
         header = []
         lineiter = iter(self.lines)
+        lineidx = count()
         files = []
         try:
             line = lineiter.next()
@@ -190,6 +192,7 @@ class DiffRenderer(object):
                             'old_lineno':   affects_old and old_line or u'',
                             'new_lineno':   affects_new and new_line or u'',
                             'action':       action,
+                            'idx':          lineidx.next(),
                             'line':         line
                         })
                         line = lineiter.next()

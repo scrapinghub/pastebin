@@ -16,7 +16,7 @@ from pygments.util import ClassNotFound
 from pygments.lexers import get_lexer_by_name, get_lexer_for_filename, \
      get_lexer_for_mimetype, PhpLexer, TextLexer, get_all_lexers
 from pygments.styles import get_all_styles
-from pygments.formatters import HtmlFormatter
+from pygments.formatters import HtmlFormatter as _HtmlFormatter
 
 from lodgeit import local
 from lodgeit.i18n import lazy_gettext as _
@@ -27,6 +27,24 @@ from lodgeit.lib.compilerparser import parse_gcc_messages, \
 
 from werkzeug import escape
 
+
+class HtmlFormatter(_HtmlFormatter):
+
+    def __init__(self, **options):
+        options.setdefault('lineanchors', 'l')
+        options.setdefault('anchorlinenos', True)
+        super(HtmlFormatter, self).__init__(**options)
+
+    def _wrap_lineanchors(self, inner):
+        s = self.lineanchors
+        i = 0
+        for t, line in inner:
+            if t:
+                i += 1
+                aid = '%s-%s' % (s, i)
+                yield 1, '<div id="%s">%s</div>' % (aid, line)
+            else:
+                yield t, line
 
 #: we use a hardcoded list here because we want to keep the interface
 #: simple

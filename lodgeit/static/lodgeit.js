@@ -115,6 +115,19 @@ var LodgeIt = {
       // small workaround in order to not slow firefox down
       submitform.css('opacity', 'inherit');
     });
+
+    // highlight selected line
+    var curLine = document.location.hash;
+    if (curLine.substring(0, 3) == '#l-') {
+      $(curLine).addClass('marked');
+    };
+    $('#paste .linenos a').each(function(i){
+        $(this).click(function(){
+            var curLine = $(this).attr('href');
+            $('#paste .marked').removeClass('marked');
+            $(curLine).addClass('marked');
+          });
+      });
   },
 
 
