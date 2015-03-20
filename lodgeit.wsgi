@@ -1,9 +1,18 @@
-# Example lodgeit file
+#!/usr/bin/env python
+import codecs
 from lodgeit import make_app
 
-application = make_app(
-    # the path to the database
-    dburi='sqlite:////path/to/lodgeit.db',
-    # generate with os.urandom(30)
-    secret_key='\x05\x82bgI\x99\xaay\xa5o\xef\xac\xa1\x93>Db\x04\xf1\x8b|\x7fT\x87|]LcM\x9d'
-)
+# http://stackoverflow.com/questions/21517358/django-mysql-unknown-encoding-utf8mb4
+codecs.register(lambda name: codecs.lookup('utf8') if name == 'utf8mb4' else None)
+
+try:
+    from local_settings import DBURI
+except ImportError:
+    DBURI = 'sqlite:////tmp/lodgeit.db'
+
+application = make_app(dburi=DBURI, secret_key='useless')
+
+
+if __name__ ==  '__main__':
+    from werkzeug.serving import run_simple
+    run_simple('0.0.0.0', 5000, application)
