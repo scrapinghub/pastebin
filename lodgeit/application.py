@@ -29,7 +29,7 @@ class LodgeIt(object):
         self.secret_key = secret_key
 
         #: bind metadata, create engine and create all tables
-        self.engine = engine = create_engine(dburi, convert_unicode=True)
+        self.engine = engine = create_engine(dburi, convert_unicode=True, pool_recycle=3500)
         db.metadata.bind = engine
         db.metadata.create_all(engine, [Paste.__table__])
 
